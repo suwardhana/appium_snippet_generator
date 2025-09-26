@@ -29,9 +29,16 @@ function App() {
       },
     ]);
     setCollapsedPanels([
-      ...collapsedPanels.map(() => true),
+      ...Array(formPanels.length).fill(true),
       false,
     ]);
+  };
+
+  const removePanel = (index: number) => {
+    const updated = formPanels.filter((_, i) => i !== index);
+    setFormPanels(updated);
+    const updatedCollapsed = collapsedPanels.filter((_, i) => i !== index);
+    setCollapsedPanels(updatedCollapsed);
   };
 
   const updateFormData = (index: number, newData: any) => {
@@ -80,6 +87,8 @@ function App() {
                 index={index}
                 isCollapsed={collapsedPanels[index] || false}
                 onToggleCollapse={() => toggleCollapse(index)}
+                onRemove={() => removePanel(index)}
+                showRemove={formPanels.length > 1}
               />
             ))}
           </div>

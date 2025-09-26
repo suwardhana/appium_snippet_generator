@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
+import { Button } from './ui/button';
 
-export default function FormPanel({ formData, setFormData, index, isCollapsed, onToggleCollapse }) {
+export default function FormPanel({ formData, setFormData, index, isCollapsed, onToggleCollapse, onRemove, showRemove }) {
   const elementTypes = ['Button', 'Input', 'TextView', 'Image', 'Switch', 'Slider'];
   const locatorStrategies = ['id', 'xpath', 'accessibilityId', 'className', 'name', 'uiAutomator', 'iOSPredicate'];
   const actions = [
@@ -26,11 +27,16 @@ export default function FormPanel({ formData, setFormData, index, isCollapsed, o
 
   return (
     <Card>
-      <CardHeader className="cursor-pointer" onClick={onToggleCollapse}>
-        <CardTitle className="flex justify-between items-center">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 py-4">
+        <CardTitle className="cursor-pointer flex items-center gap-2" onClick={onToggleCollapse}>
           Action {index + 1}
           <span className="text-sm">{isCollapsed ? '▼' : '▲'}</span>
         </CardTitle>
+        {showRemove && (
+          <Button variant="destructive" size="sm" onClick={onRemove}>
+            Remove
+          </Button>
+        )}
       </CardHeader>
       {!isCollapsed && (
         <CardContent className="space-y-4">
