@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
 
 export default function SnippetOutput({ code }) {
   const [copied, setCopied] = useState(false);
@@ -14,16 +16,17 @@ export default function SnippetOutput({ code }) {
   };
 
   return (
-    <div className="relative">
-      <div className="bg-gray-900 text-green-300 p-4 rounded font-mono whitespace-pre-wrap break-all overflow-x-auto">
+    <Card className="relative">
+      <CardContent className="bg-gray-900 text-green-300 p-4 font-mono whitespace-pre-wrap break-all overflow-x-auto">
         {code}
-      </div>
-      <button 
+      </CardContent>
+      <Button 
         onClick={handleCopy}
-        className="absolute top-2 right-2 px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
+        size="sm"
+        className="absolute top-2 right-2"
       >
         {copied ? 'Copied!' : 'Copy'}
-      </button>
-    </div>
+      </Button>
+    </Card>
   );
 }

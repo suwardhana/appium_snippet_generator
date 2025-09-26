@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 
 export default function FormPanel({ formData, setFormData, index, isCollapsed, onToggleCollapse }) {
   const elementTypes = ['Button', 'Input', 'TextView', 'Image', 'Switch', 'Slider'];
@@ -21,94 +25,110 @@ export default function FormPanel({ formData, setFormData, index, isCollapsed, o
   const needsCoordinates = ['swipe', 'longPress', 'doubleTap'].includes(formData.action);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg space-y-4">
-      <div className="p-4 border-b cursor-pointer" onClick={onToggleCollapse}>
-        <h2 className="text-xl font-semibold text-gray-800 flex justify-between items-center">
+    <Card>
+      <CardHeader className="cursor-pointer" onClick={onToggleCollapse}>
+        <CardTitle className="flex justify-between items-center">
           Action {index + 1}
           <span className="text-sm">{isCollapsed ? '▼' : '▲'}</span>
-        </h2>
-      </div>
+        </CardTitle>
+      </CardHeader>
       {!isCollapsed && (
-        <div className="p-6 space-y-4">
+        <CardContent className="space-y-4">
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Element Type</label>
-        <select name="elementType" onChange={handleChange} value={formData.elementType} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-          {elementTypes.map(e => <option key={e} value={e}>{e}</option>)}
-        </select>
+      <div className="space-y-2">
+        <Label>Element Type</Label>
+        <Select name="elementType" value={formData.elementType} onValueChange={(value) => setFormData({ ...formData, elementType: value })}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {elementTypes.map(e => <SelectItem key={e} value={e}>{e}</SelectItem>)}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Locator Strategy</label>
-          <select name="locator" onChange={handleChange} value={formData.locator} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            {locatorStrategies.map(l => <option key={l} value={l}>{l}</option>)}
-          </select>
+        <div className="space-y-2">
+          <Label>Locator Strategy</Label>
+          <Select name="locator" value={formData.locator} onValueChange={(value) => setFormData({ ...formData, locator: value })}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {locatorStrategies.map(l => <SelectItem key={l} value={l}>{l}</SelectItem>)}
+            </SelectContent>
+          </Select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Action</label>
-          <select name="action" onChange={handleChange} value={formData.action} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            {actions.map(a => <option key={a} value={a}>{a}</option>)}
-          </select>
+        <div className="space-y-2">
+          <Label>Action</Label>
+          <Select name="action" value={formData.action} onValueChange={(value) => setFormData({ ...formData, action: value })}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {actions.map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Locator Value</label>
-        <input
+      <div className="space-y-2">
+        <Label>Locator Value</Label>
+        <Input
           name="value"
           placeholder="Enter locator value"
           onChange={handleChange}
           value={formData.value}
-          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 
       {needsText && (
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Text Input</label>
-          <input
+        <div className="space-y-2">
+          <Label>Text Input</Label>
+          <Input
             name="textInput"
             placeholder="Text to send"
             onChange={handleChange}
             value={formData.textInput || ''}
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
       )}
 
       {isGestureAction && (
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Direction</label>
-          <select name="direction" onChange={handleChange} value={formData.direction || 'up'} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            {gestureDirections.map(d => <option key={d} value={d}>{d}</option>)}
-          </select>
+        <div className="space-y-2">
+          <Label>Direction</Label>
+          <Select name="direction" value={formData.direction || 'up'} onValueChange={(value) => setFormData({ ...formData, direction: value })}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {gestureDirections.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+            </SelectContent>
+          </Select>
         </div>
       )}
 
       {needsCoordinates && (
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">X Coordinate</label>
-            <input
+          <div className="space-y-2">
+            <Label>X Coordinate</Label>
+            <Input
               name="xCoord"
               type="number"
               placeholder="X"
               onChange={handleChange}
               value={formData.xCoord || ''}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Y Coordinate</label>
-            <input
+          <div className="space-y-2">
+            <Label>Y Coordinate</Label>
+            <Input
               name="yCoord"
               type="number"
               placeholder="Y"
               onChange={handleChange}
               value={formData.yCoord || ''}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -116,27 +136,31 @@ export default function FormPanel({ formData, setFormData, index, isCollapsed, o
 
       {isWaitAction && (
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Wait Type</label>
-            <select name="waitType" onChange={handleChange} value={formData.waitType || 'explicit'} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              {waitTypes.map(w => <option key={w} value={w}>{w}</option>)}
-            </select>
+          <div className="space-y-2">
+            <Label>Wait Type</Label>
+            <Select name="waitType" value={formData.waitType || 'explicit'} onValueChange={(value) => setFormData({ ...formData, waitType: value })}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {waitTypes.map(w => <SelectItem key={w} value={w}>{w}</SelectItem>)}
+              </SelectContent>
+            </Select>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Timeout (seconds)</label>
-            <input
+          <div className="space-y-2">
+            <Label>Timeout (seconds)</Label>
+            <Input
               name="timeout"
               type="number"
               placeholder="10"
               onChange={handleChange}
               value={formData.timeout || ''}
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
       )}
-        </div>
+        </CardContent>
       )}
-    </div>
+    </Card>
   );
 }
