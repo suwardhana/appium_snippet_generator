@@ -1,37 +1,43 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { APITester } from "./APITester";
-import "./index.css";
+import { useState, useEffect } from "react";
+import FormPanel from "./components/FormPanel.jsx";
+import SnippetOutput from "./components/SnippetOutput.jsx";
+import LanguageToggle from "./components/LanguageToggle.jsx";
+import { generateSnippet } from "./utils/generateSnippet";
 
-import logo from "./logo.svg";
-import reactLogo from "./react.svg";
+function App() {
+  const [formData, setFormData] = useState({
+    platform: "Android",
+    elementType: "Button",
+    locator: "id",
+    action: "click",
+    value: "",
+  });
 
-export function App() {
+  const [language, setLanguage] = useState("javascript");
+  const [code, setCode] = useState("");
+
+  useEffect(() => {
+    setCode(generateSnippet({ ...formData, language }));
+  }, [formData, language]);
+
   return (
-    <div className="container mx-auto p-8 text-center relative z-10">
-      <div className="flex justify-center items-center gap-8 mb-8">
-        <img
-          src={logo}
-          alt="Bun Logo"
-          className="h-36 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#646cffaa] scale-120"
-        />
-        <img
-          src={reactLogo}
-          alt="React Logo"
-          className="h-36 p-6 transition-all duration-300 hover:drop-shadow-[0_0_2em_#61dafbaa] [animation:spin_20s_linear_infinite]"
-        />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Appium Test Snippet Generator</h1>
+          <p className="text-gray-600">Generate mobile automation test code snippets</p>
+        </div>
+        
+        <div className="grid lg:grid-cols-2 gap-6">
+          <div className="space-y-6">
+            <LanguageToggle language={language} setLanguage={setLanguage} />
+            <FormPanel formData={formData} setFormData={setFormData} />
+          </div>
+          <div>
+            <SnippetOutput code={code} />
+          </div>
+        </div>
       </div>
-
-      <Card className="bg-card/50 backdrop-blur-sm border-muted">
-        <CardContent className="pt-6">
-          <h1 className="text-5xl font-bold my-4 leading-tight">Bun + React</h1>
-          <p>
-            Edit{" "}
-            <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">src/App.tsx</code> and
-            save to test HMR
-          </p>
-          <APITester />
-        </CardContent>
-      </Card>
     </div>
   );
 }
