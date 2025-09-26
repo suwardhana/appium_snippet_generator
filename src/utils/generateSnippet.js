@@ -1,5 +1,5 @@
 export function generateSnippet(formData) {
-  const { platform, elementType, locator, action, language, value, textInput, direction, xCoord, yCoord, waitType, timeout } = formData;
+  const { elementType, locator, action, language, value, textInput, direction, xCoord, yCoord, waitType, timeout } = formData;
   
   const templates = {
     javascript: generateJavaScript,
@@ -10,7 +10,7 @@ export function generateSnippet(formData) {
 }
 
 function generateJavaScript(formData) {
-  const { platform, elementType, locator, action, value, textInput, direction, xCoord, yCoord, waitType, timeout } = formData;
+  const { elementType, locator, action, value, textInput, direction, xCoord, yCoord, waitType, timeout } = formData;
   
   if (isDeviceAction(action)) {
     return getDeviceActionCode(action, 'javascript', formData);
@@ -29,7 +29,7 @@ function generateJavaScript(formData) {
 }
 
 function generatePython(formData) {
-  const { platform, elementType, locator, action, value, textInput, direction, xCoord, yCoord, waitType, timeout } = formData;
+  const { elementType, locator, action, value, textInput, direction, xCoord, yCoord, waitType, timeout } = formData;
   
   if (isDeviceAction(action)) {
     return getDeviceActionCode(action, 'python', formData);

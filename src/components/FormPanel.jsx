@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function FormPanel({ formData, setFormData }) {
-  const platforms = ['Android', 'iOS'];
+export default function FormPanel({ formData, setFormData, index, isCollapsed, onToggleCollapse }) {
   const elementTypes = ['Button', 'Input', 'TextView', 'Image', 'Switch', 'Slider'];
   const locatorStrategies = ['id', 'xpath', 'accessibilityId', 'className', 'name', 'uiAutomator', 'iOSPredicate'];
   const actions = [
@@ -22,23 +21,21 @@ export default function FormPanel({ formData, setFormData }) {
   const needsCoordinates = ['swipe', 'longPress', 'doubleTap'].includes(formData.action);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 space-y-4">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4">Test Configuration</h2>
-      
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Platform</label>
-          <select name="platform" onChange={handleChange} value={formData.platform} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            {platforms.map(p => <option key={p} value={p}>{p}</option>)}
-          </select>
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Element Type</label>
-          <select name="elementType" onChange={handleChange} value={formData.elementType} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            {elementTypes.map(e => <option key={e} value={e}>{e}</option>)}
-          </select>
-        </div>
+    <div className="bg-white rounded-lg shadow-lg space-y-4">
+      <div className="p-4 border-b cursor-pointer" onClick={onToggleCollapse}>
+        <h2 className="text-xl font-semibold text-gray-800 flex justify-between items-center">
+          Action {index + 1}
+          <span className="text-sm">{isCollapsed ? '▼' : '▲'}</span>
+        </h2>
+      </div>
+      {!isCollapsed && (
+        <div className="p-6 space-y-4">
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Element Type</label>
+        <select name="elementType" onChange={handleChange} value={formData.elementType} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+          {elementTypes.map(e => <option key={e} value={e}>{e}</option>)}
+        </select>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -48,7 +45,7 @@ export default function FormPanel({ formData, setFormData }) {
             {locatorStrategies.map(l => <option key={l} value={l}>{l}</option>)}
           </select>
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Action</label>
           <select name="action" onChange={handleChange} value={formData.action} className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -59,24 +56,24 @@ export default function FormPanel({ formData, setFormData }) {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Locator Value</label>
-        <input 
-          name="value" 
-          placeholder="Enter locator value" 
-          onChange={handleChange} 
-          value={formData.value} 
-          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+        <input
+          name="value"
+          placeholder="Enter locator value"
+          onChange={handleChange}
+          value={formData.value}
+          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 
       {needsText && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Text Input</label>
-          <input 
-            name="textInput" 
-            placeholder="Text to send" 
-            onChange={handleChange} 
-            value={formData.textInput || ''} 
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+          <input
+            name="textInput"
+            placeholder="Text to send"
+            onChange={handleChange}
+            value={formData.textInput || ''}
+            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
       )}
@@ -94,24 +91,24 @@ export default function FormPanel({ formData, setFormData }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">X Coordinate</label>
-            <input 
-              name="xCoord" 
-              type="number" 
-              placeholder="X" 
-              onChange={handleChange} 
-              value={formData.xCoord || ''} 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+            <input
+              name="xCoord"
+              type="number"
+              placeholder="X"
+              onChange={handleChange}
+              value={formData.xCoord || ''}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Y Coordinate</label>
-            <input 
-              name="yCoord" 
-              type="number" 
-              placeholder="Y" 
-              onChange={handleChange} 
-              value={formData.yCoord || ''} 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+            <input
+              name="yCoord"
+              type="number"
+              placeholder="Y"
+              onChange={handleChange}
+              value={formData.yCoord || ''}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -127,15 +124,17 @@ export default function FormPanel({ formData, setFormData }) {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Timeout (seconds)</label>
-            <input 
-              name="timeout" 
-              type="number" 
-              placeholder="10" 
-              onChange={handleChange} 
-              value={formData.timeout || ''} 
-              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+            <input
+              name="timeout"
+              type="number"
+              placeholder="10"
+              onChange={handleChange}
+              value={formData.timeout || ''}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
+        </div>
+      )}
         </div>
       )}
     </div>
